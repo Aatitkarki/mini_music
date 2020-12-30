@@ -1,4 +1,4 @@
-# mini_music
+# my_music
 
 A new Flutter project.
 
