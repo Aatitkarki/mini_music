@@ -1,14 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:my_music/common/ui_helper.dart';
+import 'package:my_music/features/modules/MusicPlayer/view/music_playing_Screen.dart';
 import 'package:my_music/features/modules/MusicScreen/controller/musicScreenController.dart';
-import 'package:my_music/features/modules/MusicScreen/view/dragablesheet.dart';
 import 'package:my_music/theme/colors.dart';
 
-class MusicHomePage extends StatelessWidget {
-  GlobalKey _dragabbleScrollableKey = GlobalKey<ScaffoldState>();
+class MusicScreen extends StatelessWidget {
   final MusicScreenController musicScreenController =
       Get.put(MusicScreenController());
   @override
@@ -43,7 +44,9 @@ class MusicHomePage extends StatelessWidget {
             height: 2,
             color: kDarkBlack,
           ),
-          SongsList(musicScreenController: musicScreenController,key: _dragabbleScrollableKey,),
+          SongsList(
+            musicScreenController: musicScreenController,
+          ),
         ]),
       ),
     );
@@ -91,7 +94,6 @@ class MusicHomePage extends StatelessWidget {
       ),
     );
   }
-
 }
 
 class SongsList extends StatelessWidget {
@@ -101,6 +103,18 @@ class SongsList extends StatelessWidget {
   }) : super(key: key);
 
   final MusicScreenController musicScreenController;
+
+  getBottomSheet() {
+    
+    Get.bottomSheet(
+
+      Container(
+        // height: Get.bottomBarHeight,
+        color: Colors.green,
+        child: Column(children: [
+          Text("THis is children")
+        ])));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,17 +143,43 @@ class SongsList extends StatelessWidget {
                         color: kLightBlue,
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.music_note,
-                              size: 40,
-                            ),
+                            FutureBuilder<Uint8List>(
+                                future: musicScreenController.getImage(index),
+                                builder: (_, snapshot) {
+                                  if (snapshot.data == null)
+                                    return CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage("assets/no_cover.png"),
+                                    );
+                                  if (snapshot.data.isEmpty)
+                                    return CircleAvatar(
+                                      backgroundImage:
+                                          AssetImage("assets/no_cover.png"),
+                                    );
+
+                                  return CircleAvatar(
+                                    backgroundColor: Colors.transparent,
+                                    backgroundImage: MemoryImage(
+                                      snapshot.data,
+                                    ),
+                                  );
+                                }),
+                            // Icon(
+                            //   Icons.music_note,
+                            //   size: 40,
+                            // ),
                             SizedBox(width: 10),
                             Expanded(
-                              child: Text(
-                                "${musicScreenController.songsList[index].title}",
-                                style: Theme.of(context).textTheme.bodyText1,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
+                              child: GestureDetector(
+                                onTap: (){
+                                   Get.to(MusicPlayingScreen(index: index,));
+                                },
+                                child: Text(
+                                  "${musicScreenController.songsList[index].title}",
+                                  style: Theme.of(context).textTheme.bodyText1,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
                               ),
                             ),
                             SizedBox(width: 20),
@@ -148,31 +188,26 @@ class SongsList extends StatelessWidget {
                         ));
                   },
                 ),
+                // Positioned(
+                //   bottom: 0,
+                //   left: Get.width / 2 - 25,
+                //   right: Get.width / 2 - 25,
+                //   child: GestureDetector(
+                //     onTapUp: (value){
+                //        print("${value.kind}");
+                //       print("updrage");
 
-                musicScreenController.isStopped?                
-                DraggableScrollableSheet(
-                  key: key,
-                  
-                  initialChildSize: 0.15,
-                  minChildSize: 0.15,
-                  maxChildSize: 1,
-                  expand: true,
-                  
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return Container(
-                      height: 350,
-                      color: Colors.green,
-                      child: SingleChildScrollView(
-                        controller: scrollController,
-                        child: Container(
-                          
-                        ),
-                      ),
-                    );
-                  },
-                ):
-                Container()
+                //     },
+                //     child: Container(
+                //       height: 10,
+                //       width: 30,
+                //       decoration: BoxDecoration(
+                //         borderRadius: BorderRadius.circular(10),
+                //         color: Colors.green,
+                //       ),
+                //     ),
+                //   ),
+                // )
               ],
             );
     }));

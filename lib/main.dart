@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: ScrollConfiguration(
         behavior: CustomScrollBehavior(),
-        child: MusicHomePage()),
+        child: MusicScreen()),
     );
   }
 }

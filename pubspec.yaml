@@ -29,6 +29,7 @@ dependencies:
   flutter_feather_icons: ^1.0.3
   flutter_neumorphic: ^3.0.3
   flutter_spinkit: ^4.1.2
+  modal_bottom_sheet: ^1.0.0+1
   get: ^3.22.2
   google_fonts: ^1.1.1
   logger: ^0.9.4
@@ -47,8 +48,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/no_cover.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

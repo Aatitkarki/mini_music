@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_audio_query/flutter_audio_query.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
@@ -45,15 +46,21 @@ class MusicScreenController extends GetxController {
     logger.i("THis should be at middle");
     // songsList?.forEach((song) async {
     //   imagesList.add(
-    //       await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG));
+    //       await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG,size: Size(100,100)));
     // }) ;
     // logger.i("${imagesList[_currentSongIndex]}");
     for(var song in songsList){
-      var artWork = await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG);
+      Uint8List artWork = await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG,size: Size(100,100));
       imagesList.add(artWork);
     }
+    logger.i("${imagesList[5]}");
     logger.i("this is at last");
+
     update();
+  }
+
+  Future<Uint8List> getImage(int index)async{
+    return  audioQuery.getArtwork(id: songsList[index].id, type: ResourceType.SONG,size: Size(100,100));
   }
 
   int get length => songsList.length;
