@@ -27,9 +27,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   flutter_audio_query: ^0.3.5+6
   flutter_feather_icons: ^1.0.3
-  flutter_neumorphic: ^3.0.3
   flutter_spinkit: ^4.1.2
-  modal_bottom_sheet: ^1.0.0+1
+  sleek_circular_slider: ^1.2.0
   get: ^3.22.2
   google_fonts: ^1.1.1
   logger: ^0.9.4

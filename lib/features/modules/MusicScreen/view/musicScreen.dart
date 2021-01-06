@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:my_music/common/ui_helper.dart';
@@ -105,15 +104,10 @@ class SongsList extends StatelessWidget {
   final MusicScreenController musicScreenController;
 
   getBottomSheet() {
-    
-    Get.bottomSheet(
-
-      Container(
+    Get.bottomSheet(Container(
         // height: Get.bottomBarHeight,
         color: Colors.green,
-        child: Column(children: [
-          Text("THis is children")
-        ])));
+        child: Column(children: [Text("THis is children")])));
   }
 
   @override
@@ -171,8 +165,11 @@ class SongsList extends StatelessWidget {
                             SizedBox(width: 10),
                             Expanded(
                               child: GestureDetector(
-                                onTap: (){
-                                   Get.to(MusicPlayingScreen(index: index,));
+                                onTap: () {
+                                  musicScreenController.startSong(index: index);
+                                  Get.to(MusicPlayingScreen(
+                                    index: index,
+                                  ));
                                 },
                                 child: Text(
                                   "${musicScreenController.songsList[index].title}",

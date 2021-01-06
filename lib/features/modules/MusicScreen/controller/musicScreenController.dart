@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -8,102 +9,120 @@ import 'package:logger/logger.dart';
 import 'package:my_music/features/data/songsData.dart';
 
 class MusicScreenController extends GetxController {
-  FlutterAudioQuery audioQuery = FlutterAudioQuery();
   Logger logger = Logger();
+  FlutterAudioQuery audioQuery = FlutterAudioQuery();
+  AnimationController animationController;
+
   SongData songData;
+  var songPosition = 0.obs;
 
   AudioPlayer audioPlayer = AudioPlayer();
   List<SongInfo> songsList;
-  List<Uint8List> imagesList=[];
-  int _currentSongIndex = 0;
+
+  int currentSongIndex = -1;
   bool isPlaying = false;
   bool isStopped = true;
-  // MusicFinder audioPlayer;
+  List<Uint8List> imagesList = [];
 
   @override
   void onInit() {
-    super.onInit();
+    /// For the animation we have to set the upper bound and the widget angle accordingly
+    animationController = AnimationController(
+        vsync: NavigatorState(),
+        duration: Duration(seconds: 5),
+        upperBound: 0.5 * pi);
+
+    audioPlayer.onAudioPositionChanged.listen((event) {
+      songPosition.value = event.inMilliseconds;
+    });
+
     songData = SongData();
     getData();
-    // getImage();
-    // audioPlayer = songData.audioPlayer;
+    super.onInit();
+    animationController.repeat();
   }
 
   // getImage() async {
   //   songsList.forEach((song) async {
   //     imagesList.add(
   //         await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG));
-  //   }) ;
-  //   // update();
-  //   // var image = await audioQuery.getArtwork(
-  //   //     id: songsList[_currentSongIndex].id, type: ResourceType.SONG);
-  //   // return image;
+  //   });
   // }
 
   void getData() async {
     songsList = await songData.getSongs();
-    logger.i("${songsList[0].title}");
-    logger.i("THis should be at middle");
-    // songsList?.forEach((song) async {
-    //   imagesList.add(
-    //       await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG,size: Size(100,100)));
-    // }) ;
-    // logger.i("${imagesList[_currentSongIndex]}");
-    for(var song in songsList){
-      Uint8List artWork = await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG,size: Size(100,100));
+    // logger.i("${songsList[0].title}");
+    // logger.i("THis should be at middle");
+    for (var song in songsList) {
+      Uint8List artWork = await audioQuery.getArtwork(
+          id: song.id, type: ResourceType.SONG, size: Size(100, 100));
       imagesList.add(artWork);
     }
-    logger.i("${imagesList[5]}");
-    logger.i("this is at last");
-
+    // logger.i("${imagesList[5]}");
+    // logger.i("this is at last");
     update();
   }
 
-  Future<Uint8List> getImage(int index)async{
-    return  audioQuery.getArtwork(id: songsList[index].id, type: ResourceType.SONG,size: Size(100,100));
+  Future<Uint8List> getImage(int index) async {
+    return audioQuery.getArtwork(
+        id: songsList[index].id, type: ResourceType.SONG, size: Size(100, 100));
   }
 
   int get length => songsList.length;
 
-  int get songNumber => _currentSongIndex + 1;
-  playLocal() async {
-    print("printing files");
-    if (_currentSongIndex == -1) {
-      // print(songsList[_currentSongIndex].filePath);
-      _currentSongIndex++;
-      String filePath = songsList[_currentSongIndex].filePath;
-      int status = await audioPlayer.play(filePath, isLocal: true);
-      if (status == 1) {
-        isPlaying = true;
-      }
+  int get songNumber => currentSongIndex + 1;
+
+  startSong({int index}) async {
+    index != null ? currentSongIndex = index : currentSongIndex++;
+
+    String filePath = songsList[currentSongIndex].filePath;
+    int status = await audioPlayer.play(filePath, isLocal: true);
+    logger.i(status);
+    if (status == 1) {
+      isPlaying = true;
     }
     update();
   }
 
-  pauseLocal() {
+  pauseSong() {
     audioPlayer.pause();
     isPlaying = false;
+    animationController.stop();
     update();
   }
 
-  SongInfo get nextSong {
-    if (_currentSongIndex < length) {
-      _currentSongIndex++;
-      isPlaying = true;
-      update();
-    }
-    if (_currentSongIndex >= length) return null;
-
-    return songsList[_currentSongIndex];
+  resumeSong() {
+    audioPlayer.resume();
+    isPlaying = true;
+    animationController.repeat();
+    update();
   }
 
-  SongInfo get prevSong {
-    if (_currentSongIndex > 0) {
-      _currentSongIndex--;
+  seekSong(Duration duration) {
+    audioPlayer.seek(duration);
+    // update();
+  }
+
+  SongInfo currentSong() {
+    return songsList[currentSongIndex];
+  }
+
+  nextSong() {
+    if (currentSongIndex < length) {
+      currentSongIndex++;
       update();
     }
-    if (_currentSongIndex < 0) return null;
+    if (currentSongIndex >= length) return null;
 
-    return songsList[_currentSongIndex];
+    startSong(index: currentSongIndex);
+  }
+
+  prevSong() {
+    if (currentSongIndex > 0) {
+      currentSongIndex--;
+      update();
+    }
+    if (currentSongIndex < 0) return null;
+    startSong(index: currentSongIndex);
   }
 }

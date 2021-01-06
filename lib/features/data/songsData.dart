@@ -9,7 +9,4 @@ class SongData {
     _songs = await audioQuery.getSongs();
     return _songs;
   }
-
-
-
 }
