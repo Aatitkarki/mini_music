@@ -36,10 +36,22 @@ class MusicScreenController extends GetxController {
       songPosition.value = event.inMilliseconds;
     });
 
+    audioPlayer.onPlayerCompletion.listen((event) {
+      isStopped = true;
+      animationController.reset();
+      update();
+    });
+
     songData = SongData();
     getData();
     super.onInit();
-    animationController.repeat();
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    animationController.dispose();
+    super.dispose();
   }
 
   // getImage() async {
@@ -73,13 +85,16 @@ class MusicScreenController extends GetxController {
   int get songNumber => currentSongIndex + 1;
 
   startSong({int index}) async {
+    // logger.i("${audioPlayer.mode} is mode");
+    // logger.i("${audioPlayer.state}");
+    audioPlayer.state == AudioPlayerState.PLAYING ?? audioPlayer.stop();
     index != null ? currentSongIndex = index : currentSongIndex++;
-
     String filePath = songsList[currentSongIndex].filePath;
     int status = await audioPlayer.play(filePath, isLocal: true);
     logger.i(status);
     if (status == 1) {
       isPlaying = true;
+      animationController.repeat();
     }
     update();
   }
@@ -98,9 +113,16 @@ class MusicScreenController extends GetxController {
     update();
   }
 
+  stopSong() {
+    audioPlayer.stop();
+    isPlaying = false;
+    songPosition.value = 0;
+    animationController.reset();
+    update();
+  }
+
   seekSong(Duration duration) {
     audioPlayer.seek(duration);
-    // update();
   }
 
   SongInfo currentSong() {
@@ -108,21 +130,23 @@ class MusicScreenController extends GetxController {
   }
 
   nextSong() {
+    stopSong();
     if (currentSongIndex < length) {
       currentSongIndex++;
-      update();
     }
     if (currentSongIndex >= length) return null;
 
     startSong(index: currentSongIndex);
+    update();
   }
 
   prevSong() {
+    stopSong();
     if (currentSongIndex > 0) {
       currentSongIndex--;
-      update();
     }
     if (currentSongIndex < 0) return null;
     startSong(index: currentSongIndex);
+    update();
   }
 }

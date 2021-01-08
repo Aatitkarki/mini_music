@@ -133,44 +133,45 @@ class SongsList extends StatelessWidget {
                   padding: EdgeInsets.zero,
                   itemCount: musicScreenController.songsList.length,
                   itemBuilder: (context, index) {
-                    return Card(
-                        color: kLightBlue,
-                        child: Row(
-                          children: [
-                            FutureBuilder<Uint8List>(
-                                future: musicScreenController.getImage(index),
-                                builder: (_, snapshot) {
-                                  if (snapshot.data == null)
-                                    return CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("assets/no_cover.png"),
-                                    );
-                                  if (snapshot.data.isEmpty)
-                                    return CircleAvatar(
-                                      backgroundImage:
-                                          AssetImage("assets/no_cover.png"),
-                                    );
+                    return GestureDetector(
+                      onTap: () {
+                        musicScreenController.startSong(index: index);
 
-                                  return CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    backgroundImage: MemoryImage(
-                                      snapshot.data,
-                                    ),
-                                  );
-                                }),
-                            // Icon(
-                            //   Icons.music_note,
-                            //   size: 40,
-                            // ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  musicScreenController.startSong(index: index);
-                                  Get.to(MusicPlayingScreen(
-                                    index: index,
-                                  ));
-                                },
+                        Get.to(MusicPlayingScreen(
+                          index: index,
+                        ));
+                      },
+                      child: Card(
+                          color: kLightBlue,
+                          child: Row(
+                            children: [
+                              FutureBuilder<Uint8List>(
+                                  future: musicScreenController.getImage(index),
+                                  builder: (_, snapshot) {
+                                    if (snapshot.data == null)
+                                      return CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("assets/no_cover.png"),
+                                      );
+                                    if (snapshot.data.isEmpty)
+                                      return CircleAvatar(
+                                        backgroundImage:
+                                            AssetImage("assets/no_cover.png"),
+                                      );
+
+                                    return CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage: MemoryImage(
+                                        snapshot.data,
+                                      ),
+                                    );
+                                  }),
+                              // Icon(
+                              //   Icons.music_note,
+                              //   size: 40,
+                              // ),
+                              SizedBox(width: 10),
+                              Expanded(
                                 child: Text(
                                   "${musicScreenController.songsList[index].title}",
                                   style: Theme.of(context).textTheme.bodyText1,
@@ -178,11 +179,11 @@ class SongsList extends StatelessWidget {
                                   maxLines: 1,
                                 ),
                               ),
-                            ),
-                            SizedBox(width: 20),
-                            Icon(Icons.more_vert_outlined)
-                          ],
-                        ));
+                              SizedBox(width: 20),
+                              Icon(Icons.more_vert_outlined)
+                            ],
+                          )),
+                    );
                   },
                 ),
                 // Positioned(

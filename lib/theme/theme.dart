@@ -8,12 +8,10 @@ class AppTheme {
   ThemeData kDarkTheme = ThemeData(
       backgroundColor: kBackgroundColor,
       canvasColor: kBackgroundColor,
-      
       buttonTheme: ButtonThemeData(
-        buttonColor: kDarkBlue,
-        
+        buttonColor: kViolet,
       ),
-      iconTheme: IconThemeData(color: kDarkBlue),
+      iconTheme: IconThemeData(color: kViolet),
       textTheme: GoogleFonts.latoTextTheme().copyWith(
           headline1: TextStyle(color: kPureWhite),
           button: TextStyle(fontSize: 18),
