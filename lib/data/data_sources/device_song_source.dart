@@ -1,13 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter_audio_query/flutter_audio_query.dart';
-import 'package:my_music/data/models/song_response_model.dart';
+import 'package:my_music/data/core/logger.dart';
+import 'package:my_music/data/models/song_model.dart';
 
 abstract class DeviceSongSource {
   Future<List<SongModel>> getDeviceSongs();
 }
 
 class DeviceSongSourceImpl extends DeviceSongSource {
+  Log log = Log("Device Song source Impl");
   final FlutterAudioQuery audioQuery;
   DeviceSongSourceImpl(this.audioQuery);
 

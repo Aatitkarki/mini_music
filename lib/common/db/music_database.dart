@@ -1,18 +1,12 @@
 import 'dart:io';
-
-import 'package:dartz/dartz.dart';
-import 'package:dartz/dartz_unsafe.dart';
-import 'package:logger/logger.dart';
-import 'package:my_music/data/models/song_response_model.dart';
-import 'package:my_music/domain/entities/app_error.dart';
-import 'package:my_music/domain/entities/song_entity.dart';
+import 'package:my_music/data/models/song_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class MusicDatabase {
   static MusicDatabase _musicDatabase;
   Database _database;
-  static String music_table = "MUSIC_TABLE";
+  static String musicTable = "MUSIC_TABLE";
   String songIdCol = "songId";
   String artistCol = "artist";
   String artistIdCol = "artistId";
@@ -53,7 +47,7 @@ class MusicDatabase {
   void _createDB(Database db, int newVersion) async {
     print('called helper');
     await db.execute(
-        'CREATE TABLE $music_table($songIdCol INTEGER PRIMARY KEY AUTOINCREMENT, $artistCol TEXT, $artistIdCol TEXT, $albumCol TEXT,'
+        'CREATE TABLE $musicTable($songIdCol INTEGER PRIMARY KEY AUTOINCREMENT, $artistCol TEXT, $artistIdCol TEXT, $albumCol TEXT,'
         ' $titleCol TEXT, $yearCol TEXT, $trackCol TEXT, $durationCol TEXT, $filePathCol TEXT,$uriCol TEXT )');
   }
 
@@ -63,7 +57,7 @@ class MusicDatabase {
       db.transaction((txn) async {
         Batch batch = txn.batch();
         for (var song in songsList) {
-          batch.insert(music_table, song.toMap());
+          batch.insert(musicTable, song.toMap());
         }
         batch.commit();
       });
@@ -75,12 +69,11 @@ class MusicDatabase {
 
   Future<List<SongModel>> getAllSongsList() async {
     Database db = await this.database;
-    var result = await db.rawQuery('SELECT * FROM $music_table');
+    var result = await db.rawQuery('SELECT * FROM $musicTable');
     List<SongModel> songList = List<SongModel>();
     for (var song in result) {
       songList.add(SongModel.fromJson(song));
     }
-    print("Now returning songs righ now");
     return songList;
   }
 }

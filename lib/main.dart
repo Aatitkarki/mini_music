@@ -4,11 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_music/data/core/services.dart';
-import 'package:my_music/data/data_sources/device_song_source.dart';
-import 'package:my_music/data/repositories/song_repository_impl.dart';
-import 'package:my_music/domain/repositories/song_repository.dart';
-import 'di/get_it.dart';
+import 'package:my_music/presentation/journey/home_screen/page/homeScreen.dart';
 import 'presentation/theme/theme.dart';
 import 'presentation/widgets/custom_scroll_behavior.dart';
 import 'package:pedantic/pedantic.dart';
@@ -33,52 +29,52 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.appTheme.kDarkTheme,
       debugShowCheckedModeBanner: false,
       home: ScrollConfiguration(
-          behavior: CustomScrollBehavior(), child: MusicScreen()),
+          behavior: CustomScrollBehavior(), child: HomeScreen()),
     );
   }
 }
 
-class DataController extends GetxController {
-  SongRepositoryImpl songRepo = getItInstance<SongRepository>();
+// class DataController extends GetxController {
+//   SongRepositoryImpl songRepo = getItInstance<SongRepository>();
 
-  @override
-  void onInit() {
-    loadMusic();
-    super.onInit();
-  }
+//   @override
+//   void onInit() {
+//     loadMusic();
+//     super.onInit();
+//   }
 
-  // getLoadedValue() async {
+//   // getLoadedValue() async {
 
-  //   print(isloaded);
-  // }
+//   //   print(isloaded);
+//   // }
 
-  loadMusic() async {
-    var data = await songRepo.getAllSongs();
-    data.fold((l) {
-      print("There is error");
-    }, (r) {
-      print("the song length is ${r.length}");
-    });
-  }
-}
+//   loadMusic() async {
+//     var data = await songRepo.getAllSongs();
+//     data.fold((l) {
+//       print("There is error");
+//     }, (r) {
+//       print("the song length is ${r.length}");
+//     });
+//   }
+// }
 
-class MusicScreen extends StatefulWidget {
-  @override
-  _MusicScreenState createState() => _MusicScreenState();
-}
+// class MusicScreen extends StatefulWidget {
+//   @override
+//   _MusicScreenState createState() => _MusicScreenState();
+// }
 
-class _MusicScreenState extends State<MusicScreen> {
-  DataController dc;
-  @override
-  void initState() {
-    dc = Get.put(DataController());
-    super.initState();
-  }
+// class _MusicScreenState extends State<MusicScreen> {
+//   DataController dc;
+//   @override
+//   void initState() {
+//     dc = Get.put(DataController());
+//     super.initState();
+//   }
 
-  @override
-  Widget build(BuildContext context) {
-    // startupService.setSongLoaded(false);
+//   @override
+//   Widget build(BuildContext context) {
+//     // startupService.setSongLoaded(false);
 
-    return Container();
-  }
-}
+//     return Container();
+//   }
+// }

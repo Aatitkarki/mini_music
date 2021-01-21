@@ -6,8 +6,6 @@
 // import 'package:my_music/common/ui_helper.dart';
 // import 'package:my_music/features/modules/MusicScreen/controller/musicScreenController.dart';
 // import 'package:my_music/theme/colors.dart';
-// // import 'package:seekbar/seekbar.dart';
-// // import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 // class MusicPlayingScreen extends StatelessWidget {
 //   final MusicScreenController musicController = Get.find();

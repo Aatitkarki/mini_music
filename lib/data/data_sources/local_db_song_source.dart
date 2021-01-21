@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:my_music/common/db/music_database.dart';
-import 'package:my_music/data/models/song_response_model.dart';
+import 'package:my_music/data/core/logger.dart';
+import 'package:my_music/data/models/song_model.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 abstract class LocalDbSongSource {
@@ -9,6 +10,7 @@ abstract class LocalDbSongSource {
 }
 
 class LocalDbSongSourceImpl extends LocalDbSongSource {
+  Log log = Log("Local Database Song source Impl");
   final MusicDatabase musicDatabase;
   LocalDbSongSourceImpl(this.musicDatabase);
 
