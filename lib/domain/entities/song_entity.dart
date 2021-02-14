@@ -11,7 +11,7 @@ class SongEntity extends Equatable {
   final String duration;
   final String filePath;
   final String uri;
-
+  bool isFavourite;
   SongEntity(
       {this.songId,
       this.artistId,
@@ -22,7 +22,8 @@ class SongEntity extends Equatable {
       this.track,
       this.duration,
       this.filePath,
-      this.uri});
+      this.uri,
+      this.isFavourite});
 
   @override
   List<Object> get props => [songId, title];

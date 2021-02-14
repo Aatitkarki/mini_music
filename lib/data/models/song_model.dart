@@ -11,7 +11,7 @@ class SongModel extends SongEntity {
   final String duration;
   final String filePath;
   final String uri;
-
+  bool isFavourite;
   SongModel(
       {this.songId,
       this.artistId,
@@ -22,7 +22,8 @@ class SongModel extends SongEntity {
       this.track,
       this.duration,
       this.filePath,
-      this.uri})
+      this.uri,
+      this.isFavourite})
       : super(
             songId: songId,
             album: album,
@@ -33,7 +34,8 @@ class SongModel extends SongEntity {
             title: title,
             track: track,
             uri: uri,
-            year: year);
+            year: year,
+            isFavourite: isFavourite);
 
   factory SongModel.fromJson(Map<String, dynamic> data) {
     return SongModel(
@@ -46,7 +48,8 @@ class SongModel extends SongEntity {
         title: data["title"],
         track: data["track"],
         uri: data["uri"],
-        year: data["year"]);
+        year: data["year"],
+        isFavourite: data["isFavourite"] == 1 ? true : false);
   }
 
   Map<String, dynamic> toMap() {
@@ -60,7 +63,8 @@ class SongModel extends SongEntity {
       "track": track,
       "duration": duration,
       "filePath": filePath,
-      "uri": uri
+      "uri": uri,
+      "isFavourite": isFavourite ? 1 : 0,
     };
   }
 }

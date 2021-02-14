@@ -44,4 +44,20 @@ class SongRepositoryImpl extends SongRepository {
       }
     }
   }
+
+  @override
+  Future<Either<AppError, int>> changeFavouriteStatus(
+      int index, int value) async {
+    await localDbSongSource.changeFavouriteStatus(index, value);
+  }
+
+  @override
+  Future<Either<AppError, List<SongEntity>>> getFavouriteSongs() async {
+    try {
+      return Right(await localDbSongSource.getFavouriteSongs());
+    } catch (NullFavourite) {
+      Log("").e("There are no favourite songs");
+      return Left(AppError(AppErrorType.nullFavourite));
+    }
+  }
 }

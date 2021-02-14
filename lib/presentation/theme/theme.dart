@@ -25,11 +25,11 @@ class AppTheme {
         bodyText2: TextStyle(color: kPureWhite)),
     sliderTheme: SliderThemeData(
       activeTrackColor: kSliderColor,
-      inactiveTrackColor: Colors.transparent,
-      trackHeight: 3.0,
+      inactiveTrackColor: Color(0xffee2343),
+      trackHeight: 4.0,
       thumbColor: kSliderColor,
       thumbShape: RoundSliderThumbShape(enabledThumbRadius: 0),
-      overlayColor: Colors.purple.withAlpha(32),
+      overlayColor: Colors.purple.withAlpha(92),
       overlayShape: RoundSliderOverlayShape(overlayRadius: 14.0),
     ),
   );

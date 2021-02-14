@@ -6,4 +6,6 @@ import 'package:my_music/domain/entities/song_entity.dart';
 abstract class SongRepository {
   Log log = Log("Song Repository");
   Future<Either<AppError, List<SongEntity>>> getAllSongs();
+  Future<Either<AppError, List<SongEntity>>> getFavouriteSongs();
+  Future<Either<AppError, int>> changeFavouriteStatus(int index, int value);
 }

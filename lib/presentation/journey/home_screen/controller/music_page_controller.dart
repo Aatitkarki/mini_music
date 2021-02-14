@@ -2,7 +2,9 @@ import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:my_music/data/core/logger.dart';
+import 'package:my_music/domain/entities/favourite_param.dart';
 import 'package:my_music/domain/entities/song_entity.dart';
+import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
 import 'package:my_music/domain/usecase/usecase.dart';
 import 'dart:math';
@@ -16,10 +18,13 @@ class MusicController extends GetxController {
   bool isStopped = true;
   final AudioPlayer audioPlayer;
   final GetAllSongs getAllSongs;
+  final ChangeFavouriteStatus changeFavouriteStatus;
   List<SongEntity> songsList = List<SongEntity>();
+
   // List<Uint8List> imagesList = [];
 
-  MusicController(this.audioPlayer, this.getAllSongs);
+  MusicController(
+      this.audioPlayer, this.getAllSongs, this.changeFavouriteStatus);
 
   @override
   void onInit() {
@@ -32,7 +37,7 @@ class MusicController extends GetxController {
         upperBound: 0.5 * pi);
 
     audioPlayer.onAudioPositionChanged.listen((event) {
-      songPosition.value = event.inMilliseconds;
+      songPosition.value = event.inSeconds;
     });
 
     audioPlayer.onPlayerCompletion.listen((event) {
@@ -67,6 +72,7 @@ class MusicController extends GetxController {
     String filePath = songsList[currentSongIndex].filePath;
     int status = await audioPlayer.play(filePath, isLocal: true);
     if (status == 1) {
+      isStopped = false;
       isPlaying = true;
       animationController.repeat();
     }
@@ -113,6 +119,7 @@ class MusicController extends GetxController {
   resumeSong() {
     audioPlayer.resume();
     isPlaying = true;
+// isStopped = false;
     animationController.repeat();
     update();
   }
@@ -135,7 +142,8 @@ class MusicController extends GetxController {
 
   nextSong() {
     stopSong();
-    if (currentSongIndex < length) {
+
+    if (currentSongIndex < length - 1) {
       currentSongIndex++;
     }
     if (currentSongIndex >= length) return null;
@@ -151,6 +159,22 @@ class MusicController extends GetxController {
     }
     if (currentSongIndex < 0) return null;
     startSong(index: currentSongIndex);
+    update();
+  }
+
+  changeFavStat() async {
+    int value = currentSong().isFavourite ? 0 : 1;
+    Log("").e("THe current song at initial is: ${currentSong().isFavourite}");
+    Log("").e(
+        "The songlist at initial is ${songsList[currentSongIndex].isFavourite}");
+    Log("")
+        .e("The log value is as ${!songsList[currentSongIndex].isFavourite}");
+    songsList[currentSongIndex].isFavourite =
+        !songsList[currentSongIndex].isFavourite;
+    Log("").e("THe current song at final is: ${currentSong().isFavourite}");
+    Log("").e(
+        "The song list after final is: ${songsList[currentSongIndex].isFavourite}");
+    await changeFavouriteStatus(FavouriteParams(currentSongIndex, value));
     update();
   }
 }

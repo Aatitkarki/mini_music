@@ -7,7 +7,9 @@ import 'package:my_music/data/data_sources/device_song_source.dart';
 import 'package:my_music/data/data_sources/local_db_song_source.dart';
 import 'package:my_music/data/repositories/song_repository_impl.dart';
 import 'package:my_music/domain/repositories/song_repository.dart';
+import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
+import 'package:my_music/domain/usecase/get_favourite_songs.dart';
 import 'package:my_music/presentation/journey/home_screen/controller/music_page_controller.dart';
 
 final getItInstance = GetIt.I;
@@ -30,9 +32,14 @@ Future init() {
 
   getItInstance
       .registerLazySingleton<GetAllSongs>(() => GetAllSongs(getItInstance()));
+  getItInstance.registerLazySingleton<GetFavouriteSongs>(
+      () => GetFavouriteSongs(getItInstance()));
+
+  getItInstance.registerLazySingleton<ChangeFavouriteStatus>(
+      () => ChangeFavouriteStatus(getItInstance()));
 
   getItInstance.registerLazySingleton<AudioPlayer>(() => AudioPlayer());
 
   getItInstance.registerLazySingleton<MusicController>(
-      () => MusicController(getItInstance(), getItInstance()));
+      () => MusicController(getItInstance(), getItInstance(), getItInstance()));
 }
