@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:my_music/common/constants/size_constants.dart';
 import 'package:my_music/data/core/logger.dart';
-import 'package:my_music/presentation/journey/home_screen/controller/music_page_controller.dart';
+import 'package:my_music/presentation/journey/music_player_screen/controller/music_page_controller.dart';
 import 'package:my_music/presentation/theme/colors.dart';
 
 class MusicPlayingScreen extends StatelessWidget {

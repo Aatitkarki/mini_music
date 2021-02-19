@@ -10,12 +10,12 @@ import 'package:my_music/common/constants/size_constants.dart';
 import 'package:my_music/data/core/logger.dart';
 import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
-import 'package:my_music/presentation/journey/home_screen/controller/music_page_controller.dart';
+import 'package:my_music/presentation/journey/music_player_screen/controller/music_page_controller.dart';
 import 'package:my_music/presentation/journey/music_player_screen/page/music_player_screen.dart';
 import 'package:my_music/presentation/theme/colors.dart';
 import 'package:my_music/di/get_it.dart' as getIt;
 
-class HomeScreen extends StatelessWidget {
+class AllSongsScreen extends StatelessWidget {
   final MusicController musicController = Get.put(MusicController(
       getIt.getItInstance<AudioPlayer>(),
       getIt.getItInstance<GetAllSongs>(),
@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
             height: 2,
             color: kDarkBlack,
           ),
+          //TODO: Implement the custom tabbar view using getx and navigation
           Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
             TextButton(
               child: Text("Songs"),

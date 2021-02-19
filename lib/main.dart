@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:my_music/presentation/journey/home_screen/page/homeScreen.dart';
+import 'package:my_music/presentation/journey/all_songs_screen/page/all_songs_screen.dart';
 import 'presentation/theme/theme.dart';
 import 'presentation/widgets/custom_scroll_behavior.dart';
 import 'package:pedantic/pedantic.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.appTheme.kDarkTheme,
       debugShowCheckedModeBanner: false,
       home: ScrollConfiguration(
-          behavior: CustomScrollBehavior(), child: HomeScreen()),
+          behavior: CustomScrollBehavior(), child: AllSongsScreen()),
     );
   }
 }
