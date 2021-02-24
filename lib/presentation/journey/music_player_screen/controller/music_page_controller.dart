@@ -9,6 +9,8 @@ import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
 import 'dart:math';
 
+import 'package:my_music/presentation/journey/favourite_songs_screen/controller/favourite_songs_screen_controller.dart';
+
 class MusicController extends GetxController {
   AnimationController animationController;
   int currentSongIndex = -1;
@@ -17,13 +19,14 @@ class MusicController extends GetxController {
   bool isStopped = true;
   final AudioPlayer audioPlayer;
   final GetAllSongs getAllSongs;
-  final ChangeFavouriteStatus changeFavouriteStatus;
+  final FavouriteSongScreenController _favouriteSongScreenController;
+
   List<SongEntity> songsList = List<SongEntity>();
 
   // List<Uint8List> imagesList = [];
 
   MusicController(
-      this.audioPlayer, this.getAllSongs, this.changeFavouriteStatus);
+      this.audioPlayer, this.getAllSongs, this._favouriteSongScreenController);
 
   @override
   void onInit() {
@@ -136,8 +139,12 @@ class MusicController extends GetxController {
   }
 
   changeFavStat() async {
-    if (currentSong().isFavourite) {
-      fav
+    if (songsList[currentSongIndex].isFavourite) {
+      _favouriteSongScreenController
+          .removeFromFavourite(songsList[currentSongIndex].songId);
+    } else {
+      _favouriteSongScreenController
+          .addToFavourite(songsList[currentSongIndex]);
     }
 
     songsList[currentSongIndex].isFavourite =

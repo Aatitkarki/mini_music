@@ -1,9 +1,10 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
 import 'package:my_music/presentation/journey/all_songs_screen/page/all_songs_screen.dart';
+import 'package:my_music/presentation/journey/favourite_songs_screen/controller/favourite_songs_screen_controller.dart';
+import 'package:my_music/presentation/journey/favourite_songs_screen/page/favourite_song_screen.dart';
 import 'package:my_music/presentation/journey/home_screen/controller/home_screen_controller.dart';
 import 'package:my_music/presentation/journey/home_screen/widgets/custom_appbar.dart';
 import 'package:my_music/presentation/journey/music_player_screen/controller/music_page_controller.dart';
@@ -15,9 +16,10 @@ class HomeScreen extends StatelessWidget {
   final HomeScreenController homeScreenController =
       Get.put(HomeScreenController());
   final MusicController musicController = Get.put(MusicController(
-      getIt.getItInstance<AudioPlayer>(),
-      getIt.getItInstance<GetAllSongs>(),
-      getIt.getItInstance<ChangeFavouriteStatus>()));
+      getIt.getItInstance(), getIt.getItInstance(), getIt.getItInstance()));
+  final FavouriteSongScreenController favouriteSongScreenController = Get.put(
+      FavouriteSongScreenController(
+          getIt.getItInstance(), getIt.getItInstance()));
 
   @override
   Widget build(BuildContext context) {
@@ -26,65 +28,57 @@ class HomeScreen extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            FractionallySizedBox(
-              alignment: Alignment.topCenter,
-              heightFactor: musicController.isPlaying ? 0.86 : 1,
-              child: Column(children: [
-                customAppBar(context),
+            GetBuilder<MusicController>(
+              builder: (_) => FractionallySizedBox(
+                alignment: Alignment.topCenter,
+                heightFactor: musicController.isPlaying ? 0.86 : 1,
+                child: Column(children: [
+                  customAppBar(context),
+                  Divider(
+                    height: 2,
+                    color: kDarkBlack,
+                  ),
+                  TabBar(
+                    isScrollable: true,
+                    controller: homeScreenController.tabController,
+                    tabs: homeScreenController.tabList,
+                  ),
+                  Expanded(
+                      child: TabBarView(
+                    controller: homeScreenController.tabController,
+                    children: [
+                      SongsList(
+                        musicController: musicController,
+                      ),
+                      FavouriteSongScreen(),
+                      Center(
+                        child: Text(
+                          'Place 3 Bid',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
 
-                Divider(
-                  height: 2,
-                  color: kDarkBlack,
-                ),
-                //TODO: Implement the custom tabbar view using getx and navigation
-                TabBar(
-                  isScrollable: true,
-                  controller: homeScreenController.tabController,
-                  tabs: homeScreenController.tabList,
-                ),
-                Expanded(
-                    child: TabBarView(
-                  controller: homeScreenController.tabController,
-                  children: [
-                    SongsList(
-                      musicController: musicController,
-                    ),
-                    Center(
-                      child: Text(
-                        'Place 2 Bid',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
+                      // second tab bar view widget
+                      Center(
+                        child: Text(
+                          'Buy Now',
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(
-                      child: Text(
-                        'Place 3 Bid',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-
-                    // second tab bar view widget
-                    Center(
-                      child: Text(
-                        'Buy Now',
-                        style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                )),
-                Divider(
-                  height: 2,
-                  color: kDarkBlack,
-                ),
-              ]),
+                    ],
+                  )),
+                  Divider(
+                    height: 2,
+                    color: kDarkBlack,
+                  ),
+                ]),
+              ),
             ),
             GetBuilder<MusicController>(builder: (musicController) {
               return musicController.isStopped

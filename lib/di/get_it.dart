@@ -10,6 +10,7 @@ import 'package:my_music/domain/repositories/song_repository.dart';
 import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
 import 'package:my_music/domain/usecase/get_favourite_songs.dart';
+import 'package:my_music/presentation/journey/favourite_songs_screen/controller/favourite_songs_screen_controller.dart';
 import 'package:my_music/presentation/journey/home_screen/controller/home_screen_controller.dart';
 import 'package:my_music/presentation/journey/music_player_screen/controller/music_page_controller.dart';
 
@@ -33,7 +34,8 @@ Future init() {
 
   getItInstance.registerLazySingleton<HomeScreenController>(
       () => HomeScreenController());
-
+  getItInstance.registerLazySingleton<FavouriteSongScreenController>(
+      () => FavouriteSongScreenController(getItInstance(), getItInstance()));
   getItInstance
       .registerLazySingleton<GetAllSongs>(() => GetAllSongs(getItInstance()));
   getItInstance.registerLazySingleton<GetFavouriteSongs>(

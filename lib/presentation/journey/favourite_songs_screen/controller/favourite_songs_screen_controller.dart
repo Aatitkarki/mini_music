@@ -23,6 +23,7 @@ class FavouriteSongScreenController extends GetxController {
     data.fold((l) {
       print("The error is $l");
     }, (r) {
+      print("Getting the data");
       favouriteSongsList = r;
     });
   }
@@ -33,7 +34,7 @@ class FavouriteSongScreenController extends GetxController {
     update();
   }
 
-  removeFromFavourite(int index, int id) async {
+  removeFromFavourite(int id, {int index}) async {
     index ?? searchIndex(id);
     Log("").i("$index");
     await _changeFavouriteStatus(
