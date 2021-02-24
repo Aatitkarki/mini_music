@@ -11,6 +11,7 @@ class SongModel extends SongEntity {
   final String duration;
   final String filePath;
   final String uri;
+  //TODO: Make isFavourite non final
   bool isFavourite;
   SongModel(
       {this.songId,

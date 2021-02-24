@@ -3,14 +3,13 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:my_music/data/core/logger.dart';
 import 'package:my_music/domain/entities/favourite_param.dart';
+import 'package:my_music/domain/entities/no_params.dart';
 import 'package:my_music/domain/entities/song_entity.dart';
 import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
-import 'package:my_music/domain/usecase/usecase.dart';
 import 'dart:math';
 
 class MusicController extends GetxController {
-  Log log = Log("Music Controller");
   AnimationController animationController;
   int currentSongIndex = -1;
   var songPosition = 0.obs;
@@ -79,32 +78,6 @@ class MusicController extends GetxController {
     update();
   }
 
-  // getImage() async {
-  //   songsList.forEach((song) async {
-  //     imagesList.add(
-  //         await audioQuery.getArtwork(id: song.id, type: ResourceType.SONG));
-  //   });
-  // }
-
-  // void getData() async {
-  //   songsList = await songData.getSongs();
-  //   // logger.i("${songsList[0].title}");
-  //   // logger.i("THis should be at middle");
-  //   for (var song in songsList) {
-  //     Uint8List artWork = await audioQuery.getArtwork(
-  //         id: song.id, type: ResourceType.SONG, size: Size(100, 100));
-  //     imagesList.add(artWork);
-  //   }
-  //   // logger.i("${imagesList[5]}");
-  //   // logger.i("this is at last");
-  //   update();
-  // }
-
-  // Future<Uint8List> getImage(int index) async {
-  //   return audioQuery.getArtwork(
-  //       id: songsList[index].id, type: ResourceType.SONG, size: Size(100, 100));
-  // }
-
   int get length => songsList.length;
 
   int get songNumber => currentSongIndex + 1;
@@ -163,18 +136,12 @@ class MusicController extends GetxController {
   }
 
   changeFavStat() async {
-    int value = currentSong().isFavourite ? 0 : 1;
-    Log("").e("THe current song at initial is: ${currentSong().isFavourite}");
-    Log("").e(
-        "The songlist at initial is ${songsList[currentSongIndex].isFavourite}");
-    Log("")
-        .e("The log value is as ${!songsList[currentSongIndex].isFavourite}");
+    if (currentSong().isFavourite) {
+      fav
+    }
+
     songsList[currentSongIndex].isFavourite =
         !songsList[currentSongIndex].isFavourite;
-    Log("").e("THe current song at final is: ${currentSong().isFavourite}");
-    Log("").e(
-        "The song list after final is: ${songsList[currentSongIndex].isFavourite}");
-    await changeFavouriteStatus(FavouriteParams(currentSongIndex, value));
     update();
   }
 }

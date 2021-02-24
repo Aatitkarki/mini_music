@@ -62,7 +62,7 @@ class MusicDatabase {
         }
         batch.commit();
       });
-    } on DatabaseException catch (e) {
+    } on DatabaseException {
       return false;
     }
     return true;
