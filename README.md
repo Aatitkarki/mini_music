@@ -2,8 +2,12 @@
 
 Flutter music player by Aatitkarki based on clean architecture
 
-##Project Structure
+#Screenshots
+![SongList](screenshots/songlist.jpg)
+![SongList](screenshots/favlist.jpg)
+![SongList](screenshots/favselect.jpg)
 
+#Project Structure
 lib/
     app/                          <--- application layer
         pages/                        <-- pages or screens

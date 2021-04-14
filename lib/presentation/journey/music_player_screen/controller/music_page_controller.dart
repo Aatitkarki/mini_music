@@ -1,11 +1,8 @@
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:my_music/data/core/logger.dart';
-import 'package:my_music/domain/entities/favourite_param.dart';
 import 'package:my_music/domain/entities/no_params.dart';
 import 'package:my_music/domain/entities/song_entity.dart';
-import 'package:my_music/domain/usecase/change_favourite_status.dart';
 import 'package:my_music/domain/usecase/get_all_songs.dart';
 import 'dart:math';
 
