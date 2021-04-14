@@ -3,6 +3,7 @@
 Flutter music player by Aatitkarki based on clean architecture
 
 #Screenshots
+<br>
 ![SongList](screenshots/songlist.jpg)
 ![SongList](screenshots/favlist.jpg)
 ![SongList](screenshots/favselect.jpg)
