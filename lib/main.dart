@@ -7,7 +7,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:my_music/presentation/journey/home_screen/page/home_screen.dart';
 import 'presentation/theme/theme.dart';
 import 'presentation/widgets/custom_scroll_behavior.dart';
-import 'package:pedantic/pedantic.dart';
 import 'di/get_it.dart' as getIt;
 
 void main() async {
@@ -16,12 +15,11 @@ void main() async {
     statusBarColor: Colors.transparent, // transparent status bar
   ));
   await GetStorage.init();
-  unawaited(getIt.init());
+  await (getIt.init());
 
   runApp(MyApp());
 }
 
-//TODO: Implement the local database as well as clean code architecture.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

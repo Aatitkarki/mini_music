@@ -18,7 +18,7 @@ class MusicController extends GetxController {
   final GetAllSongs getAllSongs;
   final FavouriteSongScreenController _favouriteSongScreenController;
 
-  List<SongEntity> songsList = List<SongEntity>();
+  List<SongEntity> songsList = <SongEntity>[];
 
   // List<Uint8List> imagesList = [];
 
@@ -35,11 +35,11 @@ class MusicController extends GetxController {
         duration: Duration(seconds: 5),
         upperBound: 0.5 * pi);
 
-    audioPlayer.onAudioPositionChanged.listen((event) {
+    audioPlayer.onPositionChanged.listen((event) {
       songPosition.value = event.inSeconds;
     });
 
-    audioPlayer.onPlayerCompletion.listen((event) {
+    audioPlayer.onPlayerComplete.listen((event) {
       isStopped = true;
       animationController.reset();
       nextSong();
@@ -66,11 +66,11 @@ class MusicController extends GetxController {
   }
 
   startSong({int index}) async {
-    audioPlayer.state == AudioPlayerState.PLAYING ?? audioPlayer.stop();
+    audioPlayer.state == PlayerState.playing ?? audioPlayer.stop();
     index != null ? currentSongIndex = index : currentSongIndex++;
     String filePath = songsList[currentSongIndex].filePath;
-    int status = await audioPlayer.play(filePath, isLocal: true);
-    if (status == 1) {
+    await audioPlayer.play(DeviceFileSource(filePath));
+    if (audioPlayer.state == PlayerState.playing) {
       isStopped = false;
       isPlaying = true;
       animationController.repeat();
